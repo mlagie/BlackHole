@@ -1,0 +1,53 @@
+name: Native Windows and Linux
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            name: linux
+          - runner: windows-latest
+            name: windows
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: haskell-actions/setup@v2
+        with:
+          ghc-version: '9.8.4'
+          cabal-version: '3.10.3.0'
+      - run: python test/cross-platform-ci.py --build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: blackhole-${{ matrix.name }}
+          path: ci-release/
+  exchange:
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            native: linux
+            foreign: windows
+          - runner: windows-latest
+            native: windows
+            foreign: linux
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: blackhole-${{ matrix.native }}
+          path: native
+      - uses: actions/download-artifact@v4
+        with:
+          name: blackhole-${{ matrix.foreign }}
+          path: foreign
+      - run: python test/cross-platform-ci.py --native native --foreign foreign

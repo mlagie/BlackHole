@@ -1,0 +1,22 @@
+{
+  "original_bytes": 252795649,
+  "archive_before_bytes": 69982201,
+  "archive_after_bytes": 69928291,
+  "metadata_before_bytes": 272706,
+  "metadata_after_bytes": 218796,
+  "wall_seconds": 11.92,
+  "program_seconds": 11.81,
+  "max_rss_kib": 1685088,
+  "assertions_passed": 160,
+  "inventory": {
+    "archive": "work/research/path-full.bh",
+    "bytes": 69928291,
+    "regular_files": 27593,
+    "directories": 2303,
+    "symlinks": 31,
+    "inventory_sha256": "a7aa8e39f2a010ba5e2da95f45e68181400fd0415f328b129d50163f1c907ce5",
+    "all_extracted_entries_identical": true
+  },
+  "no_persistent_block_cache": true,
+  "os_disk_cache_purged": false
+}
